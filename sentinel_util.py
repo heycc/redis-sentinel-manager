@@ -80,7 +80,7 @@ class SentinelUtil(threading.Thread):
                 val = self.zk.get(node)[0]
                 val = json.loads(val)
                 if val['addr'] != my_redis['ip'] + ':' + my_redis['port']:
-                    self.logger.error("dismatch %s zk: %s, conf: %s"\
+                    self.logger.error("<%s> dismatch zk: %s to conf: %s"\
                                     %(my_redis['name'],
                                         val['addr'],
                                         my_redis['ip'] + ':' + my_redis['port'])
@@ -209,6 +209,7 @@ if __name__ == "__main__":
         sentinel.check()
     elif args.monitor:
         sen_1 = SentinelUtil(args=args, logger=logger, action="subscribe")
-        sen_2 = SentinelUtil(args=args, logger=logger, action="refresh")
         sen_1.start()
+
+        sen_2 = SentinelUtil(args=args, logger=logger, action="refresh")
         sen_2.start()
